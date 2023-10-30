@@ -1,12 +1,15 @@
 package com.devdroid.mvvm.domain
 
-import com.devdroid.mvvm.data.models.QuoteModel
-import com.devdroid.mvvm.data.models.QuoteProvider
+import com.devdroid.mvvm.data.QuoteRepository
+import com.devdroid.mvvm.domain.model.Quote
+import javax.inject.Inject
 
-class GetRandomQuoteUseCase {
+class GetRandomQuoteUseCase @Inject constructor(
+    private val repository: QuoteRepository
+) {
 
-    operator fun invoke(): QuoteModel?{
-        val quote = QuoteProvider.quotes
+    suspend operator fun invoke(): Quote?{
+        val quote = repository.getAllQuoteFromDatabase()
         if (!quote.isNullOrEmpty()) {
             val randomNumber= (quote.indices).random()
             return quote[randomNumber]
